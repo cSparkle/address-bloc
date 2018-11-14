@@ -10,6 +10,7 @@ module.exports = class MenuController {
                 message: 'Please choose from an option below: ',
                 choices: [
                     'Add new contact',
+                        'View all contacts',
                     'Exit'
                 ]
             }
@@ -26,6 +27,9 @@ module.exports = class MenuController {
                     break;
                 case 'Exit':
                     this.exit();
+                case 'View all contacts':
+                    this.getContacts();
+                    break;
                 default:
                     console.log('Invalid input');
                     this.main();
@@ -54,5 +58,19 @@ module.exports = class MenuController {
     exit() {
         console.log('Thanks for using AddressBloc!');
         process.exit();
+    }
+
+    getContacts() {
+        this.clear();
+
+        this.book.getContacts().then((contacts) => {
+            for (let contact of contacts) {
+                console.log(`name: ${contact.name} phone number: ${contact.phone} email: ${contact.email} ----------------`);
+            }
+            this.main();
+        }).catch((err) => {
+            console.log(err);
+            this.main();
+        });
     }
 }
